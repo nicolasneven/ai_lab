@@ -6,7 +6,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 
 data = pd.read_csv('ks_projects_2018.csv', sep=',')
-# pd.set_option('display.max_rows', None, 'display.max_columns', None)
+pd.set_option('display.max_rows', None, 'display.max_columns', None)
 
 # print out all available column features
 """
@@ -30,7 +30,12 @@ data = data.replace(['canceled', 'suspended'], 'failed')
 data = data[data.state != 'live']
 data = data[data.state != 'undefined']
 
+# preview data
 # print(data['state'].unique())
+print("\nKICKSTARTER DATA")
+print(data.head())
+print("\nDATA SUMMARY")
+print(data.describe())
 
 # scale numerical data
 scaler = MinMaxScaler()
@@ -60,8 +65,8 @@ data[['Publishing', 'Film & Video', 'Music', 'Food', 'Design', 'Crafts', 'Games'
 # print(data.head())
 
 # KNN
-train_size = 8000
-test_size = 2000
+train_size = 80000
+test_size = 20000
 n_neighbors = 10
 train_data, test_data, train_labels, test_labels = train_test_split(data, labels, train_size=train_size, test_size=test_size)
 # print(train_data.shape, test_data.shape, train_labels.shape, test_labels.shape)
@@ -71,5 +76,4 @@ print("Testing Size: " + str(test_size))
 print("K = " + str(n_neighbors))
 knn = KNeighborsClassifier(n_neighbors=n_neighbors)
 knn.fit(train_data, train_labels)
-print("Score = " + str(knn.score(test_data, test_labels)))
-
+print("Accuracy Score = " + str(round(100 * knn.score(test_data, test_labels), 2)) + "%")
