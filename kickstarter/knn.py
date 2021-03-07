@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.neighbors import KNeighborsClassifier
@@ -65,15 +66,34 @@ data[['Publishing', 'Film & Video', 'Music', 'Food', 'Design', 'Crafts', 'Games'
 # print(data.head())
 
 # KNN
-train_size = 80000
-test_size = 20000
-n_neighbors = 10
+train_size = 8000
+test_size = 2000
 train_data, test_data, train_labels, test_labels = train_test_split(data, labels, train_size=train_size, test_size=test_size)
 # print(train_data.shape, test_data.shape, train_labels.shape, test_labels.shape)
 print("\nRunning KNN")
 print("Training Size: " + str(train_size))
 print("Testing Size: " + str(test_size))
-print("K = " + str(n_neighbors))
-knn = KNeighborsClassifier(n_neighbors=n_neighbors)
-knn.fit(train_data, train_labels)
-print("Accuracy Score = " + str(round(100 * knn.score(test_data, test_labels), 2)) + "%")
+
+x = []
+y = []
+for i in range(1, 100):
+    n_neighbors = i
+    print("K = " + str(n_neighbors))
+    knn = KNeighborsClassifier(n_neighbors=n_neighbors)
+    knn.fit(train_data, train_labels)
+    score = knn.score(test_data, test_labels)
+    print("Accuracy Score = " + str(round(100 * score, 2)) + "%")
+    x.append(n_neighbors)
+    y.append(score)
+
+plt.plot(x, y)
+plt.show()
+
+"""
+plt.figure(figsize=(10,6))
+plt.plot(range(1,40),error_rate,color='blue', linestyle='dashed', marker='o',markerfacecolor='red', markersize=10)
+plt.title('Error Rate vs. K Value')
+plt.xlabel('K')
+plt.ylabel('Error Rate')
+print("Minimum error:-",min(error_rate),"at K =",error_rate.index(min(error_rate)))
+"""
