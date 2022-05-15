@@ -1,1 +1,1 @@
-# ai-lab
+# kaggle-projects
